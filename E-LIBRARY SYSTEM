@@ -1,0 +1,73 @@
+import java.util.*;
+
+class Book {
+    String title;
+    boolean isAvailable = true;
+
+    Book(String title) {
+        this.title = title;
+    }
+}
+
+class Library {
+    HashMap<String, Book> books = new HashMap<>();
+
+    void addBook(String title) {
+        books.put(title, new Book(title));
+    }
+
+    void borrowBook(String title) {
+        if (books.containsKey(title) && books.get(title).isAvailable) {
+            books.get(title).isAvailable = false;
+            System.out.println("Book borrowed successfully.");
+        } else {
+            System.out.println("Book not available.");
+        }
+    }
+
+    void returnBook(String title) {
+        if (books.containsKey(title)) {
+            books.get(title).isAvailable = true;
+            System.out.println("Book returned successfully.");
+        } else {
+            System.out.println("Book not found.");
+        }
+    }
+
+    void listBooks() {
+        for (Book book : books.values()) {
+            System.out.println(book.title + " - " + (book.isAvailable ? "Available" : "Borrowed"));
+        }
+    }
+}
+
+public class ELibrarySystem {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        Library library = new Library();
+
+        // Add sample books
+        library.addBook("Java Basics");
+        library.addBook("Data Structures");
+        library.addBook("Algorithms");
+
+        while (true) {
+            System.out.println("\n1. Borrow Book\n2. Return Book\n3. View Books\n4. Exit");
+            int choice = sc.nextInt();
+            sc.nextLine(); // consume newline
+            if (choice == 1) {
+                System.out.print("Enter book title: ");
+                String title = sc.nextLine();
+                library.borrowBook(title);
+            } else if (choice == 2) {
+                System.out.print("Enter book title: ");
+                String title = sc.nextLine();
+                library.returnBook(title);
+            } else if (choice == 3) {
+                library.listBooks();
+            } else {
+                break;
+            }
+        }
+    }
+}

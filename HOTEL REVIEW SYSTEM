@@ -1,0 +1,64 @@
+import java.util.*;
+
+class Review {
+    String hotelName;
+    String user;
+    String comment;
+    int rating; // 1 to 5
+
+    Review(String hotelName, String user, String comment, int rating) {
+        this.hotelName = hotelName;
+        this.user = user;
+        this.comment = comment;
+        this.rating = rating;
+    }
+
+    public String toString() {
+        return "[" + rating + "★] " + user + " on " + hotelName + ": " + comment;
+    }
+}
+
+public class HotelReviewSystem {
+    static List<Review> reviews = new ArrayList<>();
+
+    static void addReview(String hotel, String user, String comment, int rating) {
+        reviews.add(new Review(hotel, user, comment, rating));
+    }
+
+    static void showReviews(String hotel) {
+        reviews.stream()
+            .filter(r -> r.hotelName.equalsIgnoreCase(hotel))
+            .sorted((r1, r2) -> Integer.compare(r2.rating, r1.rating)) // sort by rating descending
+            .forEach(System.out::println);
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("\n1. Add Review\n2. View Reviews by Hotel\n3. Exit");
+            int choice = sc.nextInt();
+            sc.nextLine(); // consume newline
+
+            if (choice == 1) {
+                System.out.print("Hotel name: ");
+                String hotel = sc.nextLine();
+                System.out.print("Your name: ");
+                String user = sc.nextLine();
+                System.out.print("Your comment: ");
+                String comment = sc.nextLine();
+                System.out.print("Rating (1-5): ");
+                int rating = sc.nextInt();
+                sc.nextLine();
+                addReview(hotel, user, comment, rating);
+                System.out.println("Review added!");
+            } else if (choice == 2) {
+                System.out.print("Enter hotel name: ");
+                String hotel = sc.nextLine();
+                showReviews(hotel);
+            } else {
+                break;
+            }
+        }
+    }
+}
